@@ -1,0 +1,17 @@
+name: ADHS Termin Watcher
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # alle 5 Minuten (UTC-Zeit, GitHub-Standard)
+  workflow_dispatch:         # erlaubt manuelles Starten über den "Run workflow"-Button
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Termine prüfen
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python3 check_termine.py
